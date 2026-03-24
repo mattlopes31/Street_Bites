@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+!.env.*
+prisma/dev.db
+
+# Prisma client generated artifacts (si générés localement)
+**/prisma/generated/
+

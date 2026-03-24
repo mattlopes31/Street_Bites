@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  phone      String?
+  created_at DateTime @default(now()) @map("created_at")
+  updated_at DateTime? @map("updated_at")
+
+  orderHistory OrderHistory[]
+
+  @@map("customers")
+}
+
+model OrderHistory {
+  id            String   @id @default(uuid())
+  customer_id   String  @map("customer_id")
+  order_id      String  @map("order_id")
+  total_amount  Decimal @map("total_amount")
+  items_count   Int     @map("items_count")
+  created_at    DateTime @default(now()) @map("created_at")
+
+  customer      Customer @relation(fields: [customer_id], references: [id])
+
+  @@map("order_history")
+}
+

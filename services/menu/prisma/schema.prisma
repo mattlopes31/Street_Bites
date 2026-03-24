@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id           String    @id @default(uuid())
+  name         String
+  description  String?
+  display_order Int      @map("display_order")
+  created_at   DateTime  @default(now()) @map("created_at")
+  updated_at   DateTime? @map("updated_at")
+
+  products     Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                  String    @id @default(uuid())
+  name                String
+  description         String?
+  price               Decimal
+  category_id        String    @map("category_id")
+  image_url          String?   @map("image_url")
+  is_available        Boolean   @map("is_available")
+  preparation_time    Int       @map("preparation_time")
+  created_at          DateTime  @default(now()) @map("created_at")
+  updated_at          DateTime? @map("updated_at")
+  category            Category  @relation(fields: [category_id], references: [id])
+
+  @@map("products")
+}
+
